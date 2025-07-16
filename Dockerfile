@@ -3,9 +3,13 @@ FROM python:3.11.0b1-buster
 # Set work directory
 WORKDIR /app
 
-# Install dependencies for psycopg2
+# Update apt sources to use Debian archive
+RUN echo "deb http://archive.debian.org/debian buster main" > /etc/apt/sources.list && \
+    echo "deb http://archive.debian.org/debian-security buster/updates main" >> /etc/apt/sources.list
+
+# Install dependencies for psycopg2-binary
 RUN apt-get update && apt-get install --no-install-recommends -y \
-    libpq-dev=11.16-0+deb10u1 \
+    libpq-dev \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -13,7 +17,7 @@ RUN apt-get update && apt-get install --no-install-recommends -y \
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
-# Install dependencies
+# Install Python dependencies
 COPY requirements.txt .
 RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt
