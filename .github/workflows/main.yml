@@ -57,6 +57,6 @@ jobs:
          echo Deepshi@2040 | docker login -u agill96 --password-stdin
 
          docker scout quickview
-         docker scout cves
+         docker scout cves --only-severities=medium,high,critical
 
         
