@@ -5,9 +5,18 @@ WORKDIR /app
 
 
 # dependencies for psycopg2
-RUN apt-get update && apt-get install --no-install-recommends -y dnsutils=1:9.11.5.P4+dfsg-5.1+deb10u9 libpq-dev=11.16-0+deb10u1 python3-dev=3.7.3-1 \
- && apt-get clean \
- && rm -rf /var/lib/apt/lists/*
+#RUN apt-get update && apt-get install --no-install-recommends -y dnsutils=1:9.11.5.P4+dfsg-5.1+deb10u9 libpq-dev=11.16-0+deb10u1 python3-dev=3.7.3-1 \
+ #&& apt-get clean \
+ #&& rm -rf /var/lib/apt/lists/*
+RUN sed -i 's|http://deb.debian.org/debian|http://archive.debian.org/debian|g' /etc/apt/sources.list && \
+    sed -i 's|http://security.debian.org/debian-security|http://archive.debian.org/debian-security|g' /etc/apt/sources.list && \
+    echo 'Acquire::Check-Valid-Until "false";' > /etc/apt/apt.conf.d/99no-check-valid-until && \
+    apt-get update && \
+    apt-get install --no-install-recommends -y \
+      dnsutils=1:9.11.5.P4+dfsg-5.1+deb10u9 \
+      libpq-dev=11.16-0+deb10u1 \
+      python3-dev=3.7.3-1 && \
+    apt-get clean && rm -rf /var/lib/apt/lists/*
 
 
 # Set environment variables
