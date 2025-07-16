@@ -52,10 +52,9 @@ jobs:
     - name: Docker Scout Scan
       run: |
          curl -fsSL https://raw.githubusercontent.com/docker/scout-cli/main/install.sh -o install-scout.sh
-         
-         
          echo ${{ secrets.REPO_PWD }} | docker login -u ${{ secrets.REPO_USER }} --password-stdin
          sh install-scout.sh
+         echo "${{ secrets.REPO_PWD }}" | docker scout login -u "${{ secrets.REPO_USER }}" --password-stdin
          docker scout quickview
          docker scout cves
 
